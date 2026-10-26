@@ -1,0 +1,37 @@
+# id | group | title (resolved 2026-10-23)
+Gfn7gmS8eeg | grubby-guide-2026 | #1 Getting Started
+QGwAUV4bdIw | grubby-guide-2026 | #2 Interface: Hotkeys and Control Groups
+XHSwTMD1Zxk | grubby-guide-2026 | #3 Economy: Gold, Lumber and Upkeep
+hTzu5i4F3lU | grubby-guide-2026 | #4 Heroes: XP, Abilities and Spells
+rkD3c-qLOXs | grubby-guide-2026 | #5 Army: Countering Units; Damage & Armor
+YMUTzguoT3o | grubby-guide-2026 | #6 Early Game: Creeping and Build Orders
+8iW1a9lfGdo | grubby-race | Ultimate HUMAN guide: Beginner & Intermediate
+CcEf6rGO9lk | grubby-race | Ultimate NIGHT ELF guide: Beginner & Intermediate
+JiGCRpfM2eA | grubby-race | You've started a game as Night Elf, NOW WHAT?
+MqHUxBIDKIQ | grubby-race | INSANE UNBEATABLE NEW PATCH ORC BUILD - April 2025
+EsNijdQQnDc | grubby-race | Orc Bloody Beginner Guide (Summer 2023)
+1lIYGZag8HI | grubby-race | New ORC Base Layout
+ymhbNZfLMi8 | grubby-race | This build is PERFECT for Undead beginners
+MIhg0hIwPQY | grubby-race | Undead FAST TECH guide and demonstration
+XL3rpBSeEQM | grubby-race | The EASIEST beginner build for the EASIEST race
+KwmSSvBEnH8 | grubby-general | What is the EASIEST WC3 race for beginners?
+kM3hqjAAxgI | grubby-general | How to create strategies - Breaking through the skill wall
+QcKXIpF-WDk | grubby-general | The true value of upgrades in WC3
+QGB_Ysn69jM | grubby-general | Starting WC3 in 2024 - Reforged, Graphics, Grid Hotkeys, Micro, Multitasking
+pxTXnXIczTM | grubby-general | Is the era of Piercing Damage dominance over?
+wttJKqm3UCQ | grubby-general | FIVE of WC3's most incredible META DEFINING innovations
+f0FkehOqFgU | grubby-general | Choosing goals: practice or perform? Mindset A vs B
+6CDwsUGnWDI | grubby-general | So, I ranked ALL WARCRAFT 3 ITEMS!
+PETCVKnl8ZM | grubby-hero | Hero Spotlight: The Farseer
+4eKJk1NSRTY | grubby-hero | Hero Spotlight: The Blademaster
+4dQ96VI0bBM | grubby-hero | Hero Spotlight: The Archmage
+d21y8V0AVfo | grubby-hero | Hero Spotlight: The Dreadlord
+3WTsRNJn3sc | grubby-hero | Hero Spotlight: The Dark Ranger
+Na7QRpM1l1g | grubby-hero | Hero Spotlight: The Warden
+G6I5YkHEgcg | grubby-hero | Hero Spotlight: The Pit Lord
+-vU6tquTUc4 | b2w | Beginner Human Build Order 2026 (Archmage Rifle Casters)
+2zYeTUSLk6k | b2w | Beginner Orc Build Order 2026 (Farseer Headhunters)
+WzP12O9hAFU | b2w | Beginner Undead Build Order 2026 (DK Lich Fiends)
+0bNo8lbujY8 | b2w | 5 Best Tips & Tricks for Beginners
+qX7IVXuKxyg | b2w | Warcraft III Settings 2026 - Complete Setup
+nj48fYMDIWU | b2w | The Best Warcraft III Hotkeys 2026

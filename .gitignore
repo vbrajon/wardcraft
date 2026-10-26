@@ -1,0 +1,7 @@
+node_modules/
+site/
+.wrangler/
+learn/transcripts/raw/
+__pycache__/
+.DS_Store
+lessons.md

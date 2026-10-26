@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Warcraft III — play</title>
+<style>
+  @font-face { font-family: FrizQuadrata; src: url(assets/frizqt__.ttf); }
+  :root { --btn: url(assets/wc3_btn_blue_normal_4k.png); --btn-hover: url(assets/wc3_btn_blue_hover_4k.png); --btn-down: url(assets/wc3_btn_blue_down_4k.png); }
+  html, body { margin: 0; height: 100%; background: #000; color: #e8d7a8; font: 15px/1.4 system-ui, sans-serif; overflow: hidden; }
+  [hidden] { display: none !important; }
+  .full { position: fixed; inset: 0; }
+  #movie { width: 100%; height: 100%; display: block; cursor: none; }
+  .bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .logo { position: absolute; left: 50%; top: 10vh; width: 320px; transform: translateX(-50%); filter: drop-shadow(0 4px 10px #000); }
+  #setup, #loading { display: grid; place-content: center; text-align: center; gap: 14px; background: #000; }
+  #setup nav { position: relative; display: grid; gap: 12px; justify-items: center; }
+  #error { color: #ffb3b3; text-shadow: 0 1px 3px #000; max-width: 42ch; }
+  #folder { display: none; }
+  button.plain { font: inherit; padding: 10px 22px; background: #2b2113; color: #ffd98a; border: 1px solid #8a6a2b; border-radius: 4px; cursor: pointer; }
+  button.plain:hover { background: #3a2c18; }
+  progress { width: 320px; height: 10px; accent-color: #c9a24a; }
+
+  #menu nav { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: grid; gap: 12px; }
+  #menu footer { position: absolute; left: 48px; bottom: 20px; font-size: 12px; opacity: .6; text-shadow: 0 1px 2px #000; }
+  #menu .selection { position: absolute; left: 48px; bottom: 44px; margin: 0; font: 16px FrizQuadrata, serif; color: #ffd98a; text-shadow: 0 1px 3px #000; }
+
+  .actions { position: absolute; right: 48px; bottom: 28px; display: grid; gap: 10px; }
+  .panel { background: rgba(8, 6, 4, .78); border: 1px solid #5a4624; box-shadow: 0 0 0 1px #1a1308, 0 8px 30px #000; }
+
+  #heroes { background: #06040a; }
+  #heroes canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+  #heroes .roster { position: absolute; left: 48px; top: 40px; width: 300px; padding: 14px; }
+  #heroes .tabs { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 12px; }
+  #heroes .tab { font: 14px FrizQuadrata, serif; color: #cbb27a; background: none; border: 1px solid #5a4624; padding: 5px 9px; cursor: pointer; }
+  #heroes .tab.active, #heroes .tab:hover { color: #ffe6b0; border-color: #c9a24a; background: #2b2113; }
+  #heroes .grid { display: grid; grid-template-columns: repeat(4, 64px); gap: 8px; }
+  #heroes .icon { width: 64px; height: 64px; border: 2px solid #3d2e14; background: #000 center / cover; cursor: pointer; padding: 0; }
+  #heroes .icon:hover { border-color: #c9a24a; }
+  #heroes .icon.active { border-color: #ffe6b0; box-shadow: 0 0 12px #c9a24a; }
+  #heroes .stats { position: absolute; right: 48px; top: 40px; width: 300px; padding: 16px 20px; color: #e8d7a8; }
+  #heroes .stats h2 { font: 500 26px FrizQuadrata, serif; color: #ffd98a; margin: 0 0 4px; }
+  #heroes .stats .primary { opacity: .75; margin-bottom: 12px; }
+  #heroes .stats dl { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; margin: 0 0 12px; }
+  #heroes .stats dd { margin: 0; color: #fff2cc; text-align: right; }
+  #heroes .stats ul { margin: 0; padding-left: 18px; color: #cbb27a; }
+
+  #campaign { background: #0a0806; display: grid; grid-template-columns: auto 1fr; }
+  #campaign .spines { display: flex; align-items: stretch; height: 100vh; padding-left: 24px; }
+  #campaign .spine { height: 100%; width: 52px; object-fit: cover; cursor: pointer; filter: brightness(.55); transition: filter .15s; }
+  #campaign .spine:hover, #campaign .spine.active { filter: brightness(1); }
+  #campaign .chapters { position: relative; margin: 40px 48px 40px 24px; padding: 20px 28px; overflow: hidden; min-width: 440px; }
+  #campaign .keyart { position: absolute; right: -40px; top: -40px; height: 130%; opacity: .35; pointer-events: none; mask-image: linear-gradient(to left, #000 40%, transparent); }
+  #campaign h2 { font: 500 18px FrizQuadrata, serif; color: #cbb27a; margin: 0; }
+  #campaign h3 { font: 500 32px FrizQuadrata, serif; color: #ffd98a; margin: 0 0 16px; }
+  #campaign ol { list-style: none; margin: 0; padding: 0; position: relative; max-height: calc(100vh - 220px); overflow: auto; }
+  #campaign li { display: grid; grid-template-columns: 120px 1fr; align-items: baseline; padding: 8px 10px; cursor: pointer; border-bottom: 1px solid #2a2012; }
+  #campaign li:hover { background: #2b2113; }
+  #campaign .chapter { color: #cbb27a; font: 14px FrizQuadrata, serif; }
+  #campaign .mission { color: #fff2cc; font: 16px FrizQuadrata, serif; }
+  #maps { background: #0a0806; padding: 32px 48px; overflow: auto; }
+  #maps h1 { font: 500 32px FrizQuadrata, serif; color: #ffd98a; margin: 0 0 16px; }
+  #maps .cards { display: grid; grid-template-columns: repeat(auto-fill, 190px); gap: 14px; padding-bottom: 120px; }
+  #maps .card { display: grid; gap: 6px; padding: 8px; background: rgba(8, 6, 4, .78); border: 1px solid #5a4624; cursor: pointer; text-align: left; color: #e8d7a8; }
+  #maps .card:hover { border-color: #c9a24a; background: #2b2113; }
+  #maps .card img { width: 174px; height: 174px; object-fit: contain; background: #000; image-rendering: pixelated; }
+  #maps .name { font: 500 15px FrizQuadrata, serif; color: #ffe6b0; }
+  #maps .meta { font-size: 12px; opacity: .7; }
+  #map { background: #000; }
+  #map canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+  #map .bars { pointer-events: none; }
+  #map .status { position: absolute; left: 48px; top: 24px; padding: 8px 14px; font: 500 18px FrizQuadrata, serif; color: #ffe6b0; }
+  #map .result { position: absolute; inset: 0; display: grid; place-content: center; font: 500 56px FrizQuadrata, serif; color: #ffd98a; text-shadow: 0 2px 12px #000, 0 0 30px #000; pointer-events: none; }
+  #map .controls { position: absolute; right: 48px; top: 24px; display: flex; gap: 8px; }
+  #armies { background: #0a0806; padding: 32px 48px; }
+  #armies h1 { font: 500 32px FrizQuadrata, serif; color: #ffd98a; margin: 0 0 16px; }
+  #armies .sides { display: grid; grid-template-columns: 320px 320px; gap: 24px; }
+  #armies .side { padding: 16px 20px; display: grid; gap: 8px; }
+  #armies .side h2 { font: 500 22px FrizQuadrata, serif; margin: 0 0 4px; }
+  #armies .side0 h2 { color: #e0312e; }
+  #armies .side1 h2 { color: #5a8ff0; }
+  #armies label { display: grid; grid-template-columns: 1fr 120px; align-items: center; gap: 8px; color: #e8d7a8; }
+  #armies select, #armies input { font: inherit; background: #1a1308; color: #ffe6b0; border: 1px solid #5a4624; padding: 4px 6px; }
+  #armies .units { display: grid; gap: 4px; margin-top: 8px; }
+  #screen { background: #000 center / cover; display: grid; place-content: center; gap: 24px; }
+  #screen h1 { font: 500 32px FrizQuadrata, serif; color: #ffd98a; text-align: center; margin: 0; text-shadow: 0 2px 6px #000; }
+  #screen nav { display: grid; gap: 8px; max-height: 70vh; overflow: auto; padding: 4px; }
+
+  button.stone {
+    width: 335px; height: 54px; border: 0; cursor: pointer; background: var(--btn) center / 100% 100% no-repeat;
+    font: 500 19px FrizQuadrata, serif; color: #ffe6b0; text-shadow: 0 1px 2px #000, 0 0 8px #000; letter-spacing: .02em;
+  }
+  button.stone:hover { background-image: var(--btn-hover); color: #fff2cc; }
+  button.stone:active { background-image: var(--btn-down); }
+  button.stone:disabled { opacity: .4; cursor: default; background-image: var(--btn); color: #ffe6b0; }
+</style>
+</head>
+<body>
+<canvas id="movie" class="full" hidden></canvas>
+<div id="menu" class="full" hidden></div>
+<div id="screen" class="full" hidden></div>
+<div id="heroes" class="full" hidden><canvas></canvas><div class="ui"></div></div>
+<div id="campaign" class="full" hidden></div>
+<div id="maps" class="full" hidden><h1>Maps</h1><div class="cards"></div><div class="actions"><button class="stone random">Random</button><button class="stone back">Back</button></div></div>
+<div id="map" class="full" hidden>
+  <canvas></canvas>
+  <canvas class="bars"></canvas>
+  <div class="actions"><button class="stone select">Select</button><button class="stone back">Back</button></div>
+  <div class="hud" hidden>
+    <div class="status panel"></div>
+    <div class="result"></div>
+    <div class="controls"><button class="plain" data-speed="1">1×</button><button class="plain" data-speed="2">2×</button><button class="plain" data-speed="4">4×</button><button class="plain leave">Leave</button></div>
+  </div>
+</div>
+<div id="armies" class="full" hidden><h1>Battle</h1><div class="sides"></div><div class="actions"><button class="stone fight">Fight</button><button class="stone back">Back</button></div></div>
+<div id="loading" class="full" hidden>
+  <progress></progress>
+  <div>Reading your install…</div>
+</div>
+<div id="setup" class="full" hidden>
+  <video class="bg" src="assets/mainmenu.webm" autoplay loop muted playsinline></video>
+  <img class="logo" src="assets/reforged-logo.png" alt="Warcraft III: Reforged">
+  <nav>
+    <button id="pick" class="stone" type="button">Choose your Warcraft III folder</button>
+    <input id="folder" type="file" webkitdirectory>
+    <div id="error"></div>
+  </nav>
+</div>
+<script type="module" src="main.js"></script>
+</body>
+</html>
